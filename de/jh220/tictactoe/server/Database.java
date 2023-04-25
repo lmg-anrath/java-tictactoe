@@ -53,7 +53,6 @@ public class Database {
 
     public boolean register(String username, String password) {
         try {
-            if (exists(username)) return false;
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
             String hashedPassword = new String(messageDigest.digest(password.getBytes()));
             PreparedStatement preparedStatement = this.connection.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
