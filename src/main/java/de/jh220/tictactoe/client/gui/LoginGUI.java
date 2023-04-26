@@ -44,16 +44,16 @@ public class LoginGUI extends JDialog implements ActionListener {
         String password = new String(passwordField.getPassword());
 
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Bitte Benutzername und Passwort eingeben!", "TicTacToe - Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Bitte Benutzername und Passwort eingeben!", "TicTacToe - Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         if (!username.matches("[a-zA-Z0-9]+")) {
-            JOptionPane.showMessageDialog(this, "Der Benutzername darf nur Buchstaben und Zahlen enthalten!", "TicTacToe - Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Der Benutzername darf nur Buchstaben und Zahlen enthalten!", "TicTacToe - Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (password.contains(":")) {
-            JOptionPane.showMessageDialog(this, "Das Passwort darf kein Doppelpunkt enthalten!", "TicTacToe - Fehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Das Passwort darf kein Doppelpunkt enthalten!", "TicTacToe - Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

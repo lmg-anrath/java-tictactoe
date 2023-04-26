@@ -8,12 +8,12 @@ public class Database {
     private Connection connection;
 
     public void connect(String host, String user, String password, String database) {
+        long start = System.currentTimeMillis();
         try {
-            long start = System.currentTimeMillis();
             this.connection = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database + "?autoReconnect=true&useSSL=false", user, password);
             System.out.println("Successfully connected to the database! (" + (System.currentTimeMillis() - start) + "ms)");
 
-            connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS users (username VARCHAR(255), password VARCHAR(255))");
+            connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS users (username VARCHAR(255), password VARCHAR(255), PRIMARY KEY (username))");
         } catch (SQLException exception) {
             System.out.println("An error occurred while connecting to the database!");
             System.out.println("Message: " + exception.getMessage());

@@ -1,10 +1,10 @@
-package de.jh220.tictactoe.game;
+package de.jh220.tictactoe.client.game;
 
-public class GameHandler {
+public class SinglePlayerGameHandler {
     private char[][] board;
     private char currentPlayer;
 
-    public GameHandler() {
+    public SinglePlayerGameHandler() {
         board = new char[3][3];
         currentPlayer = 'X';
         initBoard();

@@ -20,6 +20,7 @@ public class GameCloseWindowListener implements WindowListener {
     @Override
     public void windowClosing(WindowEvent event) {
         client.getGUI().setVisible(true);
+        client.getSinglePlayerGUI().reset();
     }
 
     @Override

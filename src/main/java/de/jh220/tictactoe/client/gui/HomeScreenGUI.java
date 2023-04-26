@@ -36,6 +36,7 @@ public class HomeScreenGUI extends JFrame implements ActionListener {
         loginPanel.add(loginButton);
         loginPanel.add(loggedInLabel);
 
+        multiplayerButton.setEnabled(false);
         add(buttonPanel, BorderLayout.CENTER);
         add(loginPanel, BorderLayout.SOUTH);
     }
@@ -43,27 +44,42 @@ public class HomeScreenGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == singleplayerButton) {
-            SinglePlayerGUI game = new SinglePlayerGUI(client);
-            game.setVisible(true);
+            client.getSinglePlayerGUI().setVisible(true);
             setVisible(false);
         } else if (event.getSource() == multiplayerButton) {
-            JOptionPane.showMessageDialog(this, "This feature is not implemented yet!", "TicTacToe - Info", JOptionPane.INFORMATION_MESSAGE);
+            client.getMultiPlayerHomeGUI().setVisible(true);
+            //client.getMultiPlayerGUI().setVisible(true);
+            setVisible(false);
         } else if (event.getSource() == quitButton) {
             System.exit(0);
         } else if (event.getSource() == loginButton) {
-            JOptionPane.showMessageDialog(this, "This feature is not implemented yet!", "TicTacToe - Info", JOptionPane.INFORMATION_MESSAGE);
-            /*
-            LoginGUI login = new LoginGUI(client);
-            setButtonsEnabled(false);
-            login.setVisible(true);
-            */
+            if (loginButton.getText().equals("Login")) {
+                setButtonsEnabled(false);
+                client.getLoginGUI().setVisible(true);
+            } else {
+                client.logout();
+                loggedInLabel.setText("Not logged in");
+                loginButton.setText("Login");
+                multiplayerButton.setEnabled(false);
+            }
         }
     }
 
     public void setButtonsEnabled(boolean enabled) {
         singleplayerButton.setEnabled(enabled);
-        multiplayerButton.setEnabled(enabled);
         quitButton.setEnabled(enabled);
         loginButton.setEnabled(enabled);
+
+        if (loggedInLabel.getText().equals("Not logged in")) {
+            multiplayerButton.setEnabled(false);
+        } else
+            multiplayerButton.setEnabled(enabled);
+    }
+
+    public void login(String username) {
+        loggedInLabel.setText("Logged in as " + username);
+        loginButton.setText("Logout");
+        if (singleplayerButton.isEnabled())
+            multiplayerButton.setEnabled(true);
     }
 }

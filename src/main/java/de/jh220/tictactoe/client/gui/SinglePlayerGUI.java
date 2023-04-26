@@ -1,7 +1,7 @@
 package de.jh220.tictactoe.client.gui;
 
 import de.jh220.tictactoe.client.TicTacToeClient;
-import de.jh220.tictactoe.game.GameHandler;
+import de.jh220.tictactoe.client.game.SinglePlayerGameHandler;
 import de.jh220.tictactoe.client.listeners.GameCloseWindowListener;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 
 public class SinglePlayerGUI extends JFrame implements ActionListener {
     private TicTacToeClient client;
-    private GameHandler game;
+    private SinglePlayerGameHandler game;
 
     private int size;
     private JButton[][] buttons;
@@ -26,7 +26,7 @@ public class SinglePlayerGUI extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setSize(300, 300);
 
-        game = new GameHandler();
+        game = new SinglePlayerGameHandler();
         size = 3;
 
         buttons = new JButton[size][size];
@@ -50,16 +50,9 @@ public class SinglePlayerGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == reset) {
-            game = new GameHandler();
             Container contentPane = getContentPane();
             contentPane.remove(contentPane.getComponentCount() - 1);
-            for (int row = 0; row < size; row++) {
-                for (int col = 0; col < size; col++) {
-                    buttons[row][col].setEnabled(true);
-                    buttons[row][col].setText("-");
-                }
-            }
-            label.setText("Spieler " + game.getCurrentPlayer() + " ist am Zug.");
+            reset();
             return;
         }
 
@@ -91,5 +84,15 @@ public class SinglePlayerGUI extends JFrame implements ActionListener {
                 buttons[row][col].setEnabled(false);
             }
         }
+    }
+    public void reset() {
+        game = new SinglePlayerGameHandler();
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                buttons[row][col].setEnabled(true);
+                buttons[row][col].setText("-");
+            }
+        }
+        label.setText("Spieler " + game.getCurrentPlayer() + " ist am Zug.");
     }
 }
