@@ -61,8 +61,7 @@ public class TicTacToeClient extends Client {
                     if (args[1].equals("success")) {
                         JOptionPane.showMessageDialog(loginGUI, "Du hast dich erfolgreich registriert.", "TicTacToe - Info", JOptionPane.INFORMATION_MESSAGE);
                     } else if (args[1].equals("failed")) {
-                        if (args[2].equals("userexists"))
-                            JOptionPane.showMessageDialog(loginGUI, "Der Benutzername existiert bereits.", "TicTacToe - Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(loginGUI, "Der Benutzername existiert bereits.", "TicTacToe - Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -70,6 +69,10 @@ public class TicTacToeClient extends Client {
     }
 
     public void login(String username, String password) {
+        if (!isConnected()) {
+            JOptionPane.showMessageDialog(loginGUI, "Der Server ist aktuell nicht erreichbar. Bitte versuche es später erneut!", "TicTacToe - Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         send("login:" + username + ":" + password);
         awaitMessage = "login";
     }
@@ -84,6 +87,10 @@ public class TicTacToeClient extends Client {
     }
 
     public void logout() {
+        if (!isConnected()) {
+            JOptionPane.showMessageDialog(loginGUI, "Der Server ist aktuell nicht erreichbar. Bitte versuche es später erneut!", "TicTacToe - Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         send("logout:" + username + ":" + token);
         username = null;
         token = null;
@@ -91,6 +98,10 @@ public class TicTacToeClient extends Client {
     }
 
     public void register(String username, String password) {
+        if (!isConnected()) {
+            JOptionPane.showMessageDialog(loginGUI, "Der Server ist aktuell nicht erreichbar. Bitte versuche es später erneut!", "TicTacToe - Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         send("register:" + username + ":" + password);
         awaitMessage = "register";
     }

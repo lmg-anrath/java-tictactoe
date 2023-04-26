@@ -1,7 +1,36 @@
 # Protocol
-## Description
-- Registrierung: Der Benutzer gibt seinen Benutzernamen und sein Passwort ein. Der Server speichert diese Informationen in einer Datenbank oder einer anderen Art von Datenspeicherung.
-- Anmeldung: Der Benutzer gibt seinen Benutzernamen und sein Passwort ein. Der Server überprüft diese Informationen in seiner Datenbank oder seinem Datenspeicher und gibt dem Client eine Bestätigung zurück, wenn die Anmeldung erfolgreich war.
-- Herausforderung: Der Benutzer wählt einen anderen Benutzer aus der Liste der registrierten Benutzer aus und fordert ihn zum Spiel heraus. Der Herausgeforderte kann das Angebot akzeptieren oder ablehnen.
-- Spielzüge: Die Spieler machen ihre Züge, indem sie auf das Spielfeld klicken und ihre Markierung auf dem Brett platzieren. Der Server überprüft die Züge und informiert beide Spieler über den Status des Spiels.
-- Spielende: Das Spiel endet, wenn ein Spieler drei seiner Markierungen in einer horizontalen, vertikalen oder diagonalen Reihe platziert hat, oder wenn alle Felder auf dem Brett voll sind.
+## General
+```
+-> connected
+register:<user>:<pass> -> register:success
+register:<user>:<pass> -> register:failed
+login:<user>:<pass> -> login:success:<user>:<token>
+login:<user>:<pass> -> login:failed
+logout:<user>:<token> -> logout:success
+logout:<user>:<token> -> logout:failed
+points:<user>:<token> -> points:<amount>
+```
+
+## Logged In
+```
+challenge:<challenger>:<token>:<user> -> challenge:accepted
+challenge:<challenger>:<token>:<user> -> challenge:denied
+challenge:<challenger>:<token>:<user> -> challenge:error:timeout
+challenge:<challenger>:<token>:<user> -> challenge:error:ratelimited
+challenge:<challenger>:<token>:<user> -> challenge:error:offline
+```
+
+## In Game
+```
+move:<user>:<token>:<row>,<col>
+```
+
+## Client Events
+```
+challenge:<challenger> -> accept:<user>:<token>
+challenge:<challenger> -> deny:<user>:<token>
+game:move:<row>,<col>
+game:won:<winner>
+game:lose
+game:tie
+```

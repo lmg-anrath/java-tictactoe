@@ -40,7 +40,7 @@ public class TicTacToeServer extends Server {
                 send(ip, port, "logout:failed");
         } else if (args[0].equals("register")) {
             if (database.exists(args[1])) {
-                send(ip, port, "register:failed:userexists");
+                send(ip, port, "register:failed");
                 return;
             }
             if (database.register(args[1], args[2])) {
