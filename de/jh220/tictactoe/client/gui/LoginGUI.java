@@ -1,13 +1,14 @@
 package de.jh220.tictactoe.client.gui;
 
 import de.jh220.tictactoe.client.TicTacToeClient;
+import de.jh220.tictactoe.client.listeners.LoginCloseWindowListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginGUI extends JFrame implements ActionListener {
+public class LoginGUI extends JDialog implements ActionListener {
     private TicTacToeClient client;
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -15,10 +16,9 @@ public class LoginGUI extends JFrame implements ActionListener {
     private JButton registerButton;
 
     public LoginGUI(TicTacToeClient client) {
-        super("TicTacToe - Login");
         this.client = client;
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridLayout(3, 2));
+        setLocationRelativeTo(null);
         setSize(300, 150);
 
         JLabel usernameLabel = new JLabel("Benutzername:");
@@ -31,19 +31,11 @@ public class LoginGUI extends JFrame implements ActionListener {
         add(passwordLabel);
         add(passwordField);
 
-        loginButton = new JButton("Anmelden");
-        loginButton.addActionListener(this);
-        registerButton = new JButton("Registrieren");
-        registerButton.addActionListener(this);
+        (loginButton = new JButton("Anmelden")).addActionListener(this);
+        (registerButton = new JButton("Registrieren")).addActionListener(this);
         add(loginButton);
         add(registerButton);
-    }
-
-    public void showGUI() {
-        setVisible(true);
-    }
-    public void hideGUI() {
-        setVisible(false);
+        addWindowListener(new LoginCloseWindowListener(client));
     }
 
     @Override
@@ -69,7 +61,6 @@ public class LoginGUI extends JFrame implements ActionListener {
             System.out.println("Login: " + username + ":" + password);
             client.login(username, password);
         } else if (event.getSource() == registerButton) {
-            if (client.getexists(username)) return false;
             client.register(username, password);
         }
     }

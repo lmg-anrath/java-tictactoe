@@ -1,8 +1,7 @@
 package de.jh220.tictactoe.server;
 
-import de.jh220.tictactoe.abitur.Server;
+import de.nrw.zentralabitur.netzwerke.Server;
 
-import java.security.SecureRandom;
 import java.util.HashMap;
 
 public class TicTacToeServer extends Server {

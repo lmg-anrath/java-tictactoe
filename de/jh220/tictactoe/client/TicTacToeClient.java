@@ -1,26 +1,20 @@
 package de.jh220.tictactoe.client;
 
-import de.jh220.tictactoe.abitur.Client;
-import de.jh220.tictactoe.client.gui.LoginGUI;
-import de.jh220.tictactoe.client.gui.TicTacToeGUI;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import de.nrw.zentralabitur.netzwerke.Client;
+import de.jh220.tictactoe.client.gui.*;
 
 public class TicTacToeClient extends Client {
+    private HomeScreenGUI gui;
     private LoginGUI loginGUI;
-    private TicTacToeGUI gui;
-
+    private SinglePlayerGUI singlePlayerGUI;
     String awaitMessage;
 
     public TicTacToeClient(String ip, int port) {
         super(ip, port);
         awaitMessage = null;
+        (gui = new HomeScreenGUI(this)).setVisible(true);
         loginGUI = new LoginGUI(this);
-        gui = new TicTacToeGUI();
-        loginGUI.showGUI();
-        //gui.showGUI(); // for testing purposes
+        singlePlayerGUI = new SinglePlayerGUI(this);
     }
 
     @Override
@@ -30,12 +24,7 @@ public class TicTacToeClient extends Client {
         if (awaitMessage != null) {
             if (awaitMessage.equals("login")) {
                 if (args[0].equals("login")) {
-                    if (args[1].equals("success")) {
-                        loginGUI.hideGUI();
-                        gui.showGUI();
-                    } else {
-                        loginGUI.showLoginFailed();
-                    }
+                    // TODO
                 }
             }
         }
@@ -48,5 +37,16 @@ public class TicTacToeClient extends Client {
 
     public void register(String username, String password) {
         send("register:" + username + ":" + password);
+        awaitMessage = "register";
+    }
+
+    public HomeScreenGUI getGUI() {
+        return gui;
+    }
+    public LoginGUI getLoginGUI() {
+        return loginGUI;
+    }
+    public SinglePlayerGUI getSinglePlayerGUI() {
+        return singlePlayerGUI;
     }
 }

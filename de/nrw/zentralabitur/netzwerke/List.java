@@ -1,4 +1,4 @@
-package de.jh220.tictactoe.abitur;
+package de.nrw.zentralabitur.netzwerke;
 
 /**
  * <p>

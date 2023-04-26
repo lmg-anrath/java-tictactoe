@@ -1,26 +1,32 @@
 package de.jh220.tictactoe.client.gui;
 
-import de.jh220.tictactoe.client.TicTacToeGame;
+import de.jh220.tictactoe.client.TicTacToeClient;
+import de.jh220.tictactoe.game.GameHandler;
+import de.jh220.tictactoe.client.listeners.GameCloseWindowListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TicTacToeGUI extends JFrame implements ActionListener {
-    private TicTacToeGame game;
+public class SinglePlayerGUI extends JFrame implements ActionListener {
+    private TicTacToeClient client;
+    private GameHandler game;
+
     private int size;
     private JButton[][] buttons;
     private JButton reset;
     private JPanel panel;
     private JLabel label;
 
-    public TicTacToeGUI() {
-        super("TicTacToe");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public SinglePlayerGUI(TicTacToeClient client) {
+        super("TicTacToe - Singleplayer");
+        this.client = client;
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        setLocationRelativeTo(null);
         setSize(300, 300);
 
-        game = new TicTacToeGame();
+        game = new GameHandler();
         size = 3;
 
         buttons = new JButton[size][size];
@@ -38,16 +44,13 @@ public class TicTacToeGUI extends JFrame implements ActionListener {
 
         add(panel, BorderLayout.CENTER);
         add(label, BorderLayout.SOUTH);
-    }
-
-    public void showGUI() {
-        setVisible(true);
+        addWindowListener(new GameCloseWindowListener(client));
     }
 
     @Override
     public void actionPerformed(ActionEvent event) {
         if (event.getSource() == reset) {
-            game = new TicTacToeGame();
+            game = new GameHandler();
             Container contentPane = getContentPane();
             contentPane.remove(contentPane.getComponentCount() - 1);
             for (int row = 0; row < size; row++) {
