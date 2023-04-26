@@ -84,6 +84,14 @@ public class SinglePlayerGUI extends JFrame implements ActionListener {
                 buttons[row][col].setEnabled(false);
             }
         }
+        String winField = game.getWinField();
+        if (winField != null) {
+            String[] fields = winField.split(" ");
+            for (String field : fields) {
+                String[] coords = field.split(",");
+                buttons[Integer.parseInt(coords[0])][Integer.parseInt(coords[1])].setBackground(Color.GREEN);
+            }
+        }
     }
     public void reset() {
         game = new SinglePlayerGameHandler();
@@ -91,6 +99,7 @@ public class SinglePlayerGUI extends JFrame implements ActionListener {
             for (int col = 0; col < size; col++) {
                 buttons[row][col].setEnabled(true);
                 buttons[row][col].setText("-");
+                buttons[row][col].setBackground(null);
             }
         }
         label.setText("Spieler " + game.getCurrentPlayer() + " ist am Zug.");

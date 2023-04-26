@@ -3,10 +3,12 @@ package de.jh220.tictactoe.client.game;
 public class SinglePlayerGameHandler {
     private char[][] board;
     private char currentPlayer;
+    private String winField;
 
     public SinglePlayerGameHandler() {
         board = new char[3][3];
         currentPlayer = 'X';
+        winField = null;
         initBoard();
     }
 
@@ -58,18 +60,32 @@ public class SinglePlayerGameHandler {
 
     private boolean checkRows() {
         for (int i = 0; i < 3; i++) {
-            if (check(board[i][0], board[i][1], board[i][2])) return true;
+            if (check(board[i][0], board[i][1], board[i][2])) {
+                winField = i + ",0 " + i + ",1 " + i + ",2";
+                return true;
+            }
         }
         return false;
     }
     private boolean checkColumns() {
         for (int i = 0; i < 3; i++) {
-            if (check(board[0][i], board[1][i], board[2][i])) return true;
+            if (check(board[0][i], board[1][i], board[2][i])) {
+                winField = "0," + i + " 1," + i + " 2," + i;
+                return true;
+            }
         }
         return false;
     }
     private boolean checkDiagonals() {
-        return ((check(board[0][0], board[1][1], board[2][2])) || (check(board[0][2], board[1][1], board[2][0])));
+        if (check(board[0][0], board[1][1], board[2][2])) {
+            winField = "0,0 1,1 2,2";
+            return true;
+        }
+        if (check(board[0][2], board[1][1], board[2][0])) {
+            winField = "0,2 1,1 2,0";
+            return true;
+        }
+        return false;
     }
     private boolean check(int pos1, int pos2, int pos3) {
         return ((pos1 != '-') && (pos1 == pos2) && (pos2 == pos3));
@@ -81,5 +97,9 @@ public class SinglePlayerGameHandler {
     }
     public char getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public String getWinField() {
+        return winField;
     }
 }
