@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class HomeScreenGUI extends JFrame implements ActionListener {
     private TicTacToeClient client;
     private JButton singleplayerButton, multiplayerButton, quitButton, loginButton;
-    private JLabel loggedInLabel;
+    private JLabel loggedInLabel, pointsLabel;
 
     public HomeScreenGUI(TicTacToeClient client) {
         super("TicTacToe - Home");
@@ -26,6 +26,7 @@ public class HomeScreenGUI extends JFrame implements ActionListener {
         (quitButton = new JButton("Quit Game")).addActionListener(this);
         (loginButton = new JButton("Login")).addActionListener(this);
         loggedInLabel = new JLabel("Not logged in");
+        pointsLabel = new JLabel();
 
         JPanel buttonPanel = new JPanel(new GridLayout(3, 1));
         buttonPanel.add(singleplayerButton);
@@ -35,10 +36,15 @@ public class HomeScreenGUI extends JFrame implements ActionListener {
         JPanel loginPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         loginPanel.add(loginButton);
         loginPanel.add(loggedInLabel);
+        loginPanel.add(pointsLabel);
+
+        JPanel footerPanel = new JPanel(new BorderLayout());
+        footerPanel.add(pointsLabel, BorderLayout.WEST);
+        footerPanel.add(loginPanel, BorderLayout.EAST);
 
         multiplayerButton.setEnabled(false);
         add(buttonPanel, BorderLayout.CENTER);
-        add(loginPanel, BorderLayout.SOUTH);
+        add(footerPanel, BorderLayout.SOUTH);
     }
 
     @Override
@@ -60,6 +66,7 @@ public class HomeScreenGUI extends JFrame implements ActionListener {
                 client.logout();
                 loggedInLabel.setText("Not logged in");
                 loginButton.setText("Login");
+                pointsLabel.setText("");
                 multiplayerButton.setEnabled(false);
             }
         }
@@ -81,5 +88,9 @@ public class HomeScreenGUI extends JFrame implements ActionListener {
         loginButton.setText("Logout");
         if (singleplayerButton.isEnabled())
             multiplayerButton.setEnabled(true);
+    }
+
+    public void setPoins(int points) {
+        pointsLabel.setText("Points: " + points);
     }
 }

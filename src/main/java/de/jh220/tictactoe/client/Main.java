@@ -1,7 +1,10 @@
 package de.jh220.tictactoe.client;
 
+import de.jh220.tictactoe.client.gui.StartGUI;
+
 public class Main {
     public static void main(String[] args) {
-        TicTacToeClient client = new TicTacToeClient("localhost", 5000);
+        new StartGUI();
+        //new TicTacToeClient("localhost", 3000, "jh", "123"); // for testing purposes to skip the gui
     }
 }

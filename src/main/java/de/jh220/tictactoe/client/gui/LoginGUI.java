@@ -58,7 +58,6 @@ public class LoginGUI extends JDialog implements ActionListener {
         }
 
         if (event.getSource() == loginButton) {
-            System.out.println("Login: " + username + ":" + password);
             client.login(username, password);
         } else if (event.getSource() == registerButton) {
             client.register(username, password);

@@ -5,10 +5,10 @@ import de.jh220.tictactoe.client.TicTacToeClient;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class GameCloseWindowListener implements WindowListener {
+public class SinglePlayerGameCloseWindowListener implements WindowListener {
     private TicTacToeClient client;
 
-    public GameCloseWindowListener(TicTacToeClient client) {
+    public SinglePlayerGameCloseWindowListener(TicTacToeClient client) {
         this.client = client;
     }
 

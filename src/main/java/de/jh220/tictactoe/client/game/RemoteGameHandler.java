@@ -6,37 +6,35 @@ import java.util.Random;
 
 public class RemoteGameHandler {
     private TicTacToeClient client;
+    private String opponent;
+    private char current;
 
-    public RemoteGameHandler(TicTacToeClient client) {
+    public RemoteGameHandler(TicTacToeClient client, String opponent, boolean first) {
         this.client = client;
+        this.opponent = opponent;
+        current = first ? 'X' : 'O';
     }
 
-    public String getCurrentPlayer() {
-        return new Random().nextBoolean() ? "Spieler " + "JH220" + " (" + getCurrentPlayerMark() + ") ist am Zug." : "Du (" + getCurrentPlayerMark() + ") bist am Zug.";
+    public String getCurrentLabel() {
+        if (getCurrentPlayerMark() == 'X') {
+            return "Du bist am Zug!";
+        } else {
+            return "Warte auf " + opponent + "...";
+        }
     }
     public char getCurrentPlayerMark() {
-        return new Random().nextBoolean() ? 'X' : 'O';
+        return current;
     }
 
-    public boolean setMark(int row, int col) {
-        return true; // no player already placed there
-        //return false; // player already placed there
-    }
-
-    public boolean checkWin() {
-        return false; // no player won
-        //return true; // player won
-    }
-    public boolean isTie() {
-        return false; // no tie
-        //return true; // tie
+    public void setMark(int row, int col) {
+        client.move(row, col);
     }
 
     public void newGame() {
         // TODO
     }
 
-    /*public void switchPlayer() {
-        // have to implement in server
-    }*/
+    public void switchUser() {
+        current = current == 'X' ? 'O' : 'X';
+    }
 }

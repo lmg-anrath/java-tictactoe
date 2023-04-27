@@ -2,7 +2,9 @@ package de.jh220.tictactoe.client.gui;
 
 import de.jh220.tictactoe.client.TicTacToeClient;
 import de.jh220.tictactoe.client.game.RemoteGameHandler;
-import de.jh220.tictactoe.client.listeners.GameCloseWindowListener;
+import de.jh220.tictactoe.client.listeners.MultiPlayerGameCloseWindowListener;
+import de.jh220.tictactoe.client.listeners.MultiPlayerHomeCloseWindowListener;
+import de.jh220.tictactoe.client.listeners.SinglePlayerGameCloseWindowListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +13,7 @@ import java.awt.event.ActionListener;
 
 public class MultiPlayerGUI extends JFrame implements ActionListener {
     private TicTacToeClient client;
+    private String opponent;
     private RemoteGameHandler game;
     private int size;
     private JButton[][] buttons;
@@ -18,24 +21,26 @@ public class MultiPlayerGUI extends JFrame implements ActionListener {
     private JPanel panel;
     private JLabel label;
 
-    public MultiPlayerGUI(TicTacToeClient client) {
+    public MultiPlayerGUI(TicTacToeClient client, String opponent, boolean starts) {
         super("TicTacToe - Multiplayer");
         this.client = client;
+        this.opponent = opponent;
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(300, 300);
 
-        game = new RemoteGameHandler(client);
+        game = new RemoteGameHandler(client, opponent, starts);
         size = 3;
 
         buttons = new JButton[size][size];
-        (reset = new JButton("Nochmals herausfordern!")).addActionListener(this);
+        (reset = new JButton("Nochmals spielen!")).addActionListener(this);
         (panel = new JPanel()).setLayout(new GridLayout(size, size));
-        label = new JLabel(game.getCurrentPlayer());
+        label = new JLabel(game.getCurrentLabel());
 
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 buttons[row][col] = new JButton("-");
+                buttons[row][col].setFont(new Font("Arial", Font.PLAIN, 40));
                 buttons[row][col].addActionListener(this);
                 panel.add(buttons[row][col]);
             }
@@ -43,7 +48,7 @@ public class MultiPlayerGUI extends JFrame implements ActionListener {
 
         add(panel, BorderLayout.CENTER);
         add(label, BorderLayout.SOUTH);
-        addWindowListener(new GameCloseWindowListener(client));
+        addWindowListener(new MultiPlayerGameCloseWindowListener(client));
     }
 
     @Override
@@ -60,8 +65,6 @@ public class MultiPlayerGUI extends JFrame implements ActionListener {
                 if (event.getSource() == buttons[row][col]) {
                     if (buttons[row][col].getText().equals("-")) {
                         game.setMark(row, col);
-                        buttons[row][col].setText(game.getCurrentPlayerMark() + "");
-                        label.setText(game.getCurrentPlayer());
                     }
                 }
             }
@@ -69,8 +72,13 @@ public class MultiPlayerGUI extends JFrame implements ActionListener {
     }
 
     private void endGame(boolean win) {
-        if (win) label.setText("Spieler " + game.getCurrentPlayer() + " hat gewonnen!");
-        else label.setText("Unentschieden!");
+        if (win) {
+            if (game.getCurrentPlayerMark() == 'X')
+                label.setText("Du hast gewonnen!");
+            else
+                label.setText("Spieler " + opponent + " (" + game.getCurrentPlayerMark() + ") hat gewonnen!");
+        } else
+            label.setText("Unentschieden!");
         add(reset, BorderLayout.NORTH);
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
@@ -86,6 +94,16 @@ public class MultiPlayerGUI extends JFrame implements ActionListener {
                 buttons[row][col].setText("-");
             }
         }
-        label.setText(game.getCurrentPlayer());
+        label.setText(game.getCurrentLabel());
+    }
+
+    public String getOpponent() {
+        return opponent;
+    }
+
+    public void setField(int row, int col, char user) {
+        buttons[row][col].setText(user + "");
+        game.switchUser();
+        label.setText(game.getCurrentLabel());
     }
 }

@@ -2,7 +2,7 @@ package de.jh220.tictactoe.client.gui;
 
 import de.jh220.tictactoe.client.TicTacToeClient;
 import de.jh220.tictactoe.client.game.SinglePlayerGameHandler;
-import de.jh220.tictactoe.client.listeners.GameCloseWindowListener;
+import de.jh220.tictactoe.client.listeners.SinglePlayerGameCloseWindowListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,6 +37,7 @@ public class SinglePlayerGUI extends JFrame implements ActionListener {
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 buttons[row][col] = new JButton("-");
+                buttons[row][col].setFont(new Font("Arial", Font.PLAIN, 40));
                 buttons[row][col].addActionListener(this);
                 panel.add(buttons[row][col]);
             }
@@ -44,7 +45,7 @@ public class SinglePlayerGUI extends JFrame implements ActionListener {
 
         add(panel, BorderLayout.CENTER);
         add(label, BorderLayout.SOUTH);
-        addWindowListener(new GameCloseWindowListener(client));
+        addWindowListener(new SinglePlayerGameCloseWindowListener(client));
     }
 
     @Override

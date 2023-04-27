@@ -14,6 +14,7 @@ public class Database {
             System.out.println("Successfully connected to the database! (" + (System.currentTimeMillis() - start) + "ms)");
 
             connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS users (username VARCHAR(255), password VARCHAR(255), PRIMARY KEY (username))");
+            connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS points (username VARCHAR(255), points INT, PRIMARY KEY (username))");
         } catch (SQLException exception) {
             System.out.println("An error occurred while connecting to the database!");
             System.out.println("Message: " + exception.getMessage());
@@ -67,5 +68,54 @@ public class Database {
             throw new RuntimeException(exception);
         }
         return false;
+    }
+
+    public int getPoints(String username) {
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT * FROM points WHERE username = ?");
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return resultSet.getInt("points");
+        } catch (SQLException exception) {
+            System.out.println("An error occurred while looking up the user!");
+            System.out.println("Message: " + exception.getMessage());
+        }
+        return 0;
+    }
+
+    public void addPoints(String username, int points) {
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("UPDATE points SET points = points + ? WHERE username = ?");
+            preparedStatement.setString(1, username);
+            preparedStatement.setInt(2, points);
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            System.out.println("An error occurred while adding points to the user!");
+            System.out.println("Message: " + exception.getMessage());
+        }
+    }
+
+    // get top 3
+    public String getScoreboard(String username) {
+        try {
+            PreparedStatement preparedStatement = this.connection.prepareStatement("SELECT * FROM points ORDER BY points DESC");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            int i = 1;
+            String top = "";
+            while (resultSet.next()) {
+                if (i <= 3) {
+                    top += i + ". " + resultSet.getString("username") + " - " + resultSet.getInt("points") + "\n";
+                } else if (resultSet.getString("username").equals(username)) {
+                    top += i + ". " + resultSet.getString("username") + " - " + resultSet.getInt("points") + "\n";
+                }
+                i++;
+            }
+            return top;
+        } catch (SQLException exception) {
+            System.out.println("An error occurred while getting the top 3!");
+            System.out.println("Message: " + exception.getMessage());
+        }
+        return "";
     }
 }
